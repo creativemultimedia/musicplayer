@@ -44,26 +44,26 @@ class _mainpageState extends State<mainpage> with TickerProviderStateMixin{
       ),
       bottomNavigationBar:ListTile(
         leading: Icon(Icons.music_note),
-        trailing: config.play?
-        IconButton(
-          onPressed: () async {
-            await config.player.pause();
-            setState(() {
-              config.play=!config.play;
-            });
-          },
-          icon: Icon(Icons.pause),
-        ):
-        IconButton(
-          onPressed: () async {
-            await config.player.play(DeviceFileSource("${config.allsongs[0].data}"));
-            setState(() {
-              config.play=!config.play;
-            });
-          },
-          icon: Icon(Icons.play_arrow),
-        ),
-        title: config.allsongs.length>0?SizedBox(height: 50,child: Marquee(text: "${config.allsongs[0].title}",blankSpace: 30,),):Text("Test"),
+        trailing: ValueListenableBuilder(builder: (context, value, child) {
+          return value?
+          IconButton(
+            onPressed: () async {
+              await config.player.pause();
+              config.play.value=!config.play.value;
+            },
+            icon: Icon(Icons.pause),
+          ):
+          IconButton(
+            onPressed: () async {
+              await config.player.play(DeviceFileSource("${config.allsongs[config.index.value].data}"));
+              config.play.value=!config.play.value;
+            },
+            icon: Icon(Icons.play_arrow),
+          );
+        },valueListenable: config.play,),
+        title: config.allsongs.length>0?ValueListenableBuilder(valueListenable: config.index, builder: (context, value, child) {
+          return SizedBox(height: 50,child: Marquee(text: "${config.allsongs[value].title}",blankSpace: 30,),);
+        },):Text("Test"),
       ),
     );
   }
