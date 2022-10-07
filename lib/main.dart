@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'allsongs.dart';
+import 'mainpage.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: home(),
+    home: mainpage(),
   ));
 }
 
