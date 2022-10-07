@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:musicplayer/config.dart';
+import 'package:musicplayer/playpage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class allsongs extends StatefulWidget {
@@ -25,7 +26,17 @@ class _allsongsState extends State<allsongs> {
               return ListTile(
                 onTap: () async {
                   config.play.value=true;
-                  config.index.value=index;
+                  if(index!=config.index.value)
+                    {
+                      config.index.value=index;
+                    }
+                  else
+                    {
+                      print("hi");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return playpage();
+                      },));
+                    }
                   print(config.index.value);
                   if(config.player.state==PlayerState.playing)
                   {
@@ -38,7 +49,7 @@ class _allsongsState extends State<allsongs> {
                 },
                 trailing:  ValueListenableBuilder(valueListenable: config.index,builder: (context, value2, child) {
                   return value1==true && index==value2?Image.network("https://i.pinimg.com/originals/cb/17/b8/cb17b80a942d7c317a35ff1324fae12f.gif",height: 50,width: 50,fit: BoxFit.fitHeight):
-                  Text("hello");
+                  Text("");
                 },),
                 title: Text("${songModel.title}"),
                 subtitle: Text("${songModel.artist}"),
