@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musicplayer/config.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class artistsongs extends StatefulWidget {
@@ -9,12 +10,7 @@ class artistsongs extends StatefulWidget {
 }
 
 class _artistsongsState extends State<artistsongs> {
-  OnAudioQuery _audioQuery = OnAudioQuery();
-  getartistsongs() async {
-    List<ArtistModel> something = await _audioQuery.queryArtists();
-    print(something);
-    return something;
-  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -34,7 +30,7 @@ class _artistsongsState extends State<artistsongs> {
           return Center(child: CircularProgressIndicator(),);
         }
       },
-      future: getartistsongs(),
+      future: config.getartistsongs(),
     );
   }
 }
