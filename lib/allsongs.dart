@@ -21,17 +21,29 @@ class _allsongsState extends State<allsongs> {
               itemBuilder: (context, index) {
               SongModel songModel=list[index];
               print(songModel);
-            return ListTile(
-              onTap: () async {
+            return ValueListenableBuilder(valueListenable: config.play, builder: (context, value1, child) {
+              return ListTile(
+                onTap: () async {
+                  config.play.value=true;
                   config.index.value=index;
-                  config.playlist.value[index]=true;
-                  print(config.playlist.value);
-                  await config.player.play(DeviceFileSource("${config.allsongs[config.index.value].data}"));
-              },
-              trailing: Image.network("https://i.pinimg.com/originals/cb/17/b8/cb17b80a942d7c317a35ff1324fae12f.gif",height: 50,width: 50,fit: BoxFit.fitHeight),
-              title: Text("${songModel.title}"),
-              subtitle: Text("${songModel.artist}"),
-            );
+                  print(config.index.value);
+                  if(config.player.state==PlayerState.playing)
+                  {
+                    await config.player.stop();
+                    await config.player.play(DeviceFileSource("${config.allsongs[config.index.value].data}"));
+                  }
+                  else{
+                    await config.player.play(DeviceFileSource("${config.allsongs[config.index.value].data}"));
+                  }
+                },
+                trailing:  ValueListenableBuilder(valueListenable: config.index,builder: (context, value2, child) {
+                  return value1==true && index==value2?Image.network("https://i.pinimg.com/originals/cb/17/b8/cb17b80a942d7c317a35ff1324fae12f.gif",height: 50,width: 50,fit: BoxFit.fitHeight):
+                  Text("hello");
+                },),
+                title: Text("${songModel.title}"),
+                subtitle: Text("${songModel.artist}"),
+              );
+            },);
           }, separatorBuilder: (context, index) {
             return Divider();
           }, itemCount: list.length);
