@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:marquee/marquee.dart';
 import 'package:musicplayer/albumsongs.dart';
+import 'package:musicplayer/artistpage.dart';
 import 'package:musicplayer/artistsongs.dart';
 import 'allsongs.dart';
 import 'config.dart';
@@ -18,10 +19,8 @@ class _mainpageState extends State<mainpage> with TickerProviderStateMixin{
   @override
   void initState() {
     tabController=TabController(length: 3, vsync: this);
-
+    print(config.page.value);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +40,8 @@ class _mainpageState extends State<mainpage> with TickerProviderStateMixin{
         controller: tabController,
         children: [
           allsongs(),
-          albumsongs(),
           artistsongs(),
+          albumsongs(),
         ],
       ),
       bottomNavigationBar:ListTile(

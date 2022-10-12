@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musicplayer/artistpage.dart';
 import 'package:musicplayer/config.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -20,7 +21,16 @@ class _artistsongsState extends State<artistsongs> {
           List<ArtistModel> list=snapshot.data as List<ArtistModel>;
           return ListView.separated(itemBuilder: (context, index) {
             ArtistModel artistModel=list[index];
-            return ListTile(title: Text("${artistModel.artist}"),);
+            return ListTile(
+              onTap: () {
+                // config.page.value="artist";
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return artistpage(artistModel);
+                },));
+              },
+              title: Text("${artistModel.artist}"),
+              subtitle: Text("${artistModel.numberOfAlbums} album | ${artistModel.numberOfTracks} song"),
+            );
           }, separatorBuilder: (context, index) {
             return Divider();
           }, itemCount: list.length);

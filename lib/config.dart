@@ -7,7 +7,10 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:audioplayers/audioplayers.dart';
 class config
 {
+
   static ValueNotifier<int> index=ValueNotifier(0);
+  static ValueNotifier<int> artistindex=ValueNotifier(0);
+  static ValueNotifier<String> page=ValueNotifier("tab");
   // static int index=0;
   static AudioPlayer player = AudioPlayer();
   // static bool play=false;
@@ -15,6 +18,8 @@ class config
   static ValueNotifier<double> songtime=ValueNotifier(0);
   static OnAudioQuery audioQuery = OnAudioQuery();
   static List<SongModel> allsongs=[];
+  // static List<SongModel> songsbyartist=[];
+  static ValueNotifier<List<SongModel>> songsbyartist=ValueNotifier([]);
   static List<ArtistModel> artistsongs=[];
   static List<PlaylistModel> playlists=[];
   static List<AlbumModel> alumsongs=[];
@@ -26,6 +31,10 @@ class config
   static getallsongs() async {
     allsongs = await audioQuery.querySongs();
     return allsongs;
+  }
+  static getallsongbyartist(int artistid) async {
+    songsbyartist.value = await audioQuery.queryAudiosFrom(AudiosFromType.ARTIST_ID,artistid);
+    return songsbyartist.value;
   }
   static getartistsongs() async {
     artistsongs = await audioQuery.queryArtists();

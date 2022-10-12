@@ -21,7 +21,7 @@ class _allsongsState extends State<allsongs> {
       builder: (context, snapshot) {
         if(snapshot.connectionState==ConnectionState.done)
         {
-          List list=snapshot.data as List;
+          List<SongModel> list=snapshot.data as List<SongModel>;
           return Column(
             children: [
               ListTile(
@@ -50,7 +50,7 @@ class _allsongsState extends State<allsongs> {
                             {
                               print("hi");
                               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return playpage();
+                                return playpage(list);
                               },));
                             }
                             print(config.index.value);

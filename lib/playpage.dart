@@ -5,7 +5,8 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'config.dart';
 
 class playpage extends StatefulWidget {
-  const playpage({Key? key}) : super(key: key);
+  List<SongModel> songs;
+  playpage(this.songs);
   @override
   State<playpage> createState() => _playpageState();
 }
@@ -57,11 +58,11 @@ class _playpageState extends State<playpage> {
                 title: SizedBox(
                   height: 50,
                   child: Marquee(
-                    text: "${config.allsongs[config.index.value].title}",
+                    text: "${widget.songs[config.index.value].title}",
                     blankSpace: 30,
                   ),
                 ),
-                subtitle: Text("${config.allsongs[config.index.value].artist}"),
+                subtitle: Text("${widget.songs[config.index.value].artist}"),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -87,25 +88,25 @@ class _playpageState extends State<playpage> {
                               );
                             },);
                           },title: Text("Create New Playlist"),),
-                          FutureBuilder(builder: (context, snapshot) {
+                          Expanded(child: FutureBuilder(builder: (context, snapshot) {
                             if(snapshot.connectionState==ConnectionState.done)
-                              {
-                                List<PlaylistModel> playlist=snapshot.data as List<PlaylistModel>;
-                                return ListView.builder(shrinkWrap: true,itemBuilder: (context, index) {
-                                  return ListTile(onTap:() async {
-                                    await config.audioQuery.addToPlaylist(playlist[index].id,config.allsongs[config.index.value].id);
-                                    Navigator.pop(context);
-                                  },
-                                    title: Text("${playlist[index].getMap['name']}"),
-                                    subtitle: Text("${playlist[index].getMap['num_of_songs']}"),
-                                  );
-                                },itemCount:playlist.length,);
-                              }
+                            {
+                              List<PlaylistModel> playlist=snapshot.data as List<PlaylistModel>;
+                              return ListView.builder(shrinkWrap: true,itemBuilder: (context, index) {
+                                return ListTile(onTap:() async {
+                                  await config.audioQuery.addToPlaylist(playlist[index].id,widget.songs[config.index.value].id);
+                                  Navigator.pop(context);
+                                },
+                                  title: Text("${playlist[index].getMap['name']}"),
+                                  subtitle: Text("${playlist[index].getMap['num_of_songs']}"),
+                                );
+                              },itemCount:playlist.length,);
+                            }
                             else
-                              {
-                                return Container();
-                              }
-                          },future: config.getplaylists(),)
+                            {
+                              return Container();
+                            }
+                          },future: config.getplaylists(),))
                         ],
                       );
                     },);
@@ -127,13 +128,13 @@ class _playpageState extends State<playpage> {
                               await config.player.seek(Duration(milliseconds: val.toInt()));
                             },
                             min: 0,
-                            max: config.allsongs[config.index.value].duration!.toDouble(),
+                            max: widget.songs[config.index.value].duration!.toDouble(),
                           )
                         ],
                       );
                     },),
                   ),
-                  Text(printDuration(Duration(milliseconds: config.allsongs[config.index.value].duration!))),
+                  Text(printDuration(Duration(milliseconds: widget.songs[config.index.value].duration!))),
                 ],
               ),
               Row(
@@ -150,7 +151,7 @@ class _playpageState extends State<playpage> {
                       config.play.value=!config.play.value;
                     }, icon: Icon(Icons.pause)):
                     IconButton(onPressed: () async {
-                      await config.player.play(DeviceFileSource("${config.allsongs[config.index.value].data}"));
+                      await config.player.play(DeviceFileSource("${widget.songs[config.index.value].data}"));
                       config.play.value=!config.play.value;
                     },
                         icon: Icon(Icons.play_arrow));
