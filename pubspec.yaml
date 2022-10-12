@@ -39,6 +39,7 @@ dependencies:
   on_audio_query:
   audioplayers:
   marquee:
+  flutter_media_metadata:
 
 dev_dependencies:
   flutter_test:

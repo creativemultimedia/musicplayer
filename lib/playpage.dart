@@ -31,9 +31,25 @@ class _playpageState extends State<playpage> {
       body: Column(
         children: [
           Expanded(
-              child: Container(
-            color: Colors.amberAccent,
-          )),
+              child: ValueListenableBuilder(
+                builder: (context, value, child) {
+                  return FutureBuilder(
+                    builder: (context, snapshot) {
+                      if(snapshot.hasData)
+                      {
+                        return snapshot.data!;
+                      }
+                      else
+                      {
+                        return Icon(Icons.music_note);
+                      }
+                    },
+                    future: config.getmediaImage(value),
+                  );
+                },
+                valueListenable: config.index,
+              )
+          ),
           Expanded(
               child: Column(
             children: [

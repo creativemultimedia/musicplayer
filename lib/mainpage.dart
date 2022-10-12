@@ -18,7 +18,10 @@ class _mainpageState extends State<mainpage> with TickerProviderStateMixin{
   @override
   void initState() {
     tabController=TabController(length: 3, vsync: this);
+
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,24 @@ class _mainpageState extends State<mainpage> with TickerProviderStateMixin{
         ],
       ),
       bottomNavigationBar:ListTile(
-        leading: Icon(Icons.music_note),
+        leading: ValueListenableBuilder(
+          builder: (context, value, child) {
+            return FutureBuilder(
+              builder: (context, snapshot) {
+                if(snapshot.hasData)
+                {
+                  return snapshot.data!;
+                }
+                else
+                {
+                  return Icon(Icons.music_note);
+                }
+              },
+              future: config.getmediaImage(value),
+            );
+          },
+          valueListenable: config.index,
+        ),
         trailing: ValueListenableBuilder(builder: (context, value, child) {
           return value?
           IconButton(
@@ -72,6 +92,6 @@ class _mainpageState extends State<mainpage> with TickerProviderStateMixin{
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    config.player.stop().then((value) {});
+    config.player.dispose().then((value) {});
   }
 }
