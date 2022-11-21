@@ -18,13 +18,27 @@ class _mainpageState extends State<mainpage> with TickerProviderStateMixin{
   TabController? tabController;
   @override
   void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light
+          //color set to transperent or set your own color
+        )
+    );
     tabController=TabController(length: 3, vsync: this);
     print(config.page.value);
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarDividerColor: Colors.blue,
+        systemNavigationBarColor: Colors.transparent
+        // ...
+    );
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text("App"),
         bottom: TabBar(
